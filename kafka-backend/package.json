@@ -1,0 +1,21 @@
+{
+  "name": "kafka-backend",
+  "version": "1.0.0",
+  "description": "server for kafka ",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "Chinmay Kamerkar",
+  "license": "ISC",
+  "dependencies": {
+    "kafka-node": "^2.6.1",
+    "mongoose": "^5.12.3"
+  },
+  "devDependencies": {
+    "eslint": "^7.23.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.22.1"
+  }
+}
