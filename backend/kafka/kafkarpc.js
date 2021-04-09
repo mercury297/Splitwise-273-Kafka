@@ -1,9 +1,13 @@
+/* eslint-disable no-use-before-define */
 /* eslint-disable camelcase */
 const crypto = require('crypto');
 const conn = require('./connection');
 
 const TIMEOUT = 8000; // time to wait for response in ms
 let self;
+
+// eslint-disable-next-line no-multi-assign
+exports = module.exports = KafkaRPC;
 
 function KafkaRPC() {
   self = this;
@@ -56,7 +60,7 @@ KafkaRPC.prototype.makeRequest = function (topic_name, content, callback) {
     console.log('in response1');
     console.log(self.producer.ready);
     self.producer.send(payloads, (err, data) => {
-      console.log('in response2');
+      console.log('in response2', data);
       if (err) console.log(err);
       console.log(data);
     });
@@ -94,5 +98,3 @@ KafkaRPC.prototype.setupResponseQueue = function (producer, topic_name, next) {
   console.log('returning next');
   return next();
 };
-
-module.exports = KafkaRPC;

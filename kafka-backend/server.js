@@ -1,19 +1,22 @@
+/* eslint-disable camelcase */
 const connection = require('./kafka/Connection');
+const users = require('./services/users/index');
 
 require('./db/connection');
 
 // eslint-disable-next-line no-unused-vars
-function handleTopicRequest(topicName, fname) {
-  const consumer = connection.getConsumer(topicName);
+function handleTopicRequest(topic_name, fname) {
+  // var topic_name = 'root_topic';
+  const consumer = connection.getConsumer(topic_name);
   const producer = connection.getProducer();
-  console.log(`server is running for ${topicName} topic`);
+  console.log(`server is running for topic ${topic_name}`);
   consumer.on('message', (message) => {
-    console.log(`message received for ${topicName} `, fname);
+    console.log(`message received for ${topic_name} `, fname);
     console.log(JSON.stringify(message.value));
     const data = JSON.parse(message.value);
 
     fname.handleRequest(data.data, (err, res) => {
-      console.log(`after handle ${JSON.stringify(res)}`);
+      console.log(`after handle${res}`);
       const payloads = [
         {
           topic: data.replyTo,
@@ -24,12 +27,9 @@ function handleTopicRequest(topicName, fname) {
           partition: 0,
         },
       ];
-      producer.send(payloads, (producerErr, producerData) => {
-        if (err) {
-          console.log(`Producer send : ${producerErr}`);
-        } else {
-          console.log(producerData);
-        }
+      // eslint-disable-next-line no-shadow
+      producer.send(payloads, (_err, data) => {
+        console.log(data);
       });
     });
   });
@@ -38,3 +38,4 @@ function handleTopicRequest(topicName, fname) {
 // Add topics here
 // first arg => topic name
 // second arg respective service function
+handleTopicRequest('users', users);

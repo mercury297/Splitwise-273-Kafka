@@ -25,6 +25,8 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use('/user', require('./routes/register'));
+
 const port = process.env.PORT;
 // || 3001;
 app.listen(port, () => console.log(`listening on port ${port}`));

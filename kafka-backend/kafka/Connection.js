@@ -1,11 +1,12 @@
+/* eslint-disable no-multi-assign */
 /* eslint-disable camelcase */
+/* eslint-disable max-len */
 const kafka = require('kafka-node');
 
 function ConnectionProvider() {
   this.getConsumer = function (topic_name) {
     this.client = new kafka.Client('localhost:2181');
-    this.kafkaConsumerConnection = new kafka.Consumer(this.client,
-      [{ topic: topic_name, partition: 0 }]);
+    this.kafkaConsumerConnection = new kafka.Consumer(this.client, [{ topic: topic_name, partition: 0 }]);
     this.client.on('ready', () => { console.log('client ready!'); });
 
     return this.kafkaConsumerConnection;
@@ -23,5 +24,4 @@ function ConnectionProvider() {
     return this.kafkaProducerConnection;
   };
 }
-
-module.exports = new ConnectionProvider();
+exports = module.exports = new ConnectionProvider();

@@ -1,7 +1,7 @@
+/* eslint-disable camelcase */
 const kafka = require('kafka-node');
 
 function ConnectionProvider() {
-  // eslint-disable-next-line camelcase
   this.getConsumer = function (topic_name) {
     // if (!this.kafkaConsumerConnection) {
 
@@ -11,8 +11,8 @@ function ConnectionProvider() {
                     console.warn('Error refreshing kafka metadata', err);
                 }
             }); */
-    this.kafkaConsumerConnection = new kafka.Consumer(this.client,
-      [{ topic: topic_name, partition: 0 }]);
+    // eslint-disable-next-line max-len
+    this.kafkaConsumerConnection = new kafka.Consumer(this.client, [{ topic: topic_name, partition: 0 }]);
     this.client.on('ready', () => { console.log('client ready!'); });
     // }
     return this.kafkaConsumerConnection;
@@ -35,4 +35,5 @@ function ConnectionProvider() {
     return this.kafkaProducerConnection;
   };
 }
-module.exports = new ConnectionProvider();
+// eslint-disable-next-line no-multi-assign
+exports = module.exports = new ConnectionProvider();
