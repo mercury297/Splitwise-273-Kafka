@@ -2,6 +2,7 @@
 const connection = require('./kafka/Connection');
 const users = require('./services/users/index');
 const passport = require('./services/passport');
+const pictures = require('./services/pictures/index');
 
 require('./db/connection');
 
@@ -41,3 +42,4 @@ function handleTopicRequest(topic_name, fname) {
 // second arg respective service function
 handleTopicRequest('users', users);
 handleTopicRequest('passport', passport);
+handleTopicRequest('pictures', pictures);

@@ -107,9 +107,36 @@ const updateUser = async (email, updates) => {
   }
 };
 
+const updateUserByID = async (userID, updates) => {
+  try {
+    console.log('inside controller', userID);
+    const updateObject = await User.findByIdAndUpdate(userID, updates, {
+      new: true,
+      useFindAndModify: true,
+    });
+    if (updateObject) {
+      return {
+        statusCode: 200,
+        body: updateObject,
+      };
+    } else {
+      return {
+        statusCode: 500,
+        body: 'Update error',
+      };
+    }
+  } catch (err) {
+    return {
+      statusCode: 500,
+      body: err,
+    };
+  }
+};
+
 module.exports = {
   createUser,
   findUserForLogin,
   findUserById,
   updateUser,
+  updateUserByID,
 };
