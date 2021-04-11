@@ -1,5 +1,6 @@
 const registerHandler = require('./registerHandler');
 const loginHandler = require('./loginHandler');
+const testHandler = require('./testHandler');
 
 /* eslint-disable no-param-reassign */
 function handleRequest(msg, callback) {
@@ -10,6 +11,9 @@ function handleRequest(msg, callback) {
   } else if (msg.path === 'user-login') {
     delete msg.path;
     loginHandler(msg, callback);
+  } else if (msg.path === 'user-test') {
+    delete msg.path;
+    testHandler(msg, callback);
   }
 }
 

@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
+const session = require('express-session');
 
 dotenv.config();
 
@@ -14,6 +15,14 @@ app.use(bodyParser.json());
 
 app.use(morgan('dev'));
 app.use(cors());
+
+app.use(session({
+  secret: 'cmpe273_kafka_passport_mongo',
+  resave: false,
+  saveUninitialized: false,
+  duration: 60 * 60 * 1000,
+  activeDuration: 5 * 60 * 1000,
+}));
 
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');

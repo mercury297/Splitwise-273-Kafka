@@ -60,7 +60,30 @@ const findUserForLogin = async (email, password) => {
   }
 };
 
+const findUserById = async (ID) => {
+  try {
+    const userObject = await User.findById(ID);
+    if (!userObject) {
+      return {
+        statusCode: 404,
+        body: 'Invalid token',
+      };
+    } else {
+      return {
+        statusCode: 200,
+        body: userObject,
+      };
+    }
+  } catch (err) {
+    return {
+      statusCode: 500,
+      body: err,
+    };
+  }
+};
+
 module.exports = {
   createUser,
   findUserForLogin,
+  findUserById,
 };
