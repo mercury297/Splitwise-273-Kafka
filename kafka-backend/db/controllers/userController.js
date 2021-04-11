@@ -82,8 +82,34 @@ const findUserById = async (ID) => {
   }
 };
 
+const updateUser = async (email, updates) => {
+  try {
+    const updateObject = await User.findOneAndUpdate({ email }, updates, {
+      new: true,
+      useFindAndModify: true,
+    });
+    if (updateObject) {
+      return {
+        statusCode: 200,
+        body: updateObject,
+      };
+    } else {
+      return {
+        statusCode: 500,
+        body: 'Update error',
+      };
+    }
+  } catch (err) {
+    return {
+      statusCode: 500,
+      body: err,
+    };
+  }
+};
+
 module.exports = {
   createUser,
   findUserForLogin,
   findUserById,
+  updateUser,
 };
