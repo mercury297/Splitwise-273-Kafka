@@ -37,6 +37,7 @@ app.use((req, res, next) => {
 app.use('/user', require('./routes/user'));
 app.use('/profile', require('./routes/profile'));
 app.use('/picture', require('./routes/picture'));
+app.use('/group', require('./routes/createGroup'));
 
 const port = process.env.PORT;
 // || 3001;

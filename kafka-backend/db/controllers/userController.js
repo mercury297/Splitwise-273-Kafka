@@ -133,10 +133,41 @@ const updateUserByID = async (userID, updates) => {
   }
 };
 
+const addToGroupOne = async (email, groupName) => {
+  try {
+    const updateObject = await User.findOneAndUpdate({ email },
+      {
+        $push:
+        { groups: { groupName, inviteAccepted: true } },
+      }, {
+        new: true,
+        useFindAndModify: true,
+      });
+    if (updateObject) {
+      return {
+        statusCode: 200,
+        body: updateObject,
+      };
+    } else {
+      return {
+        statusCode: 500,
+        body: 'Update error',
+      };
+    }
+  } catch (err) {
+    console.log('add user to group err:', err);
+    return {
+      statusCode: 500,
+      body: err,
+    };
+  }
+};
+
 module.exports = {
   createUser,
   findUserForLogin,
   findUserById,
   updateUser,
   updateUserByID,
+  addToGroupOne,
 };

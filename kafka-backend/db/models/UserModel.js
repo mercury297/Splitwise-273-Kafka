@@ -39,8 +39,8 @@ const usersSchema = new Schema({
     type: String,
   },
   groups: [{
-    groupID: {
-      type: Schema.Types.ObjectId,
+    groupName: {
+      type: String,
       required: true,
     },
     inviteAccepted: {
