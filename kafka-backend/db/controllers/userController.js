@@ -215,6 +215,59 @@ const getAllUsers = async () => {
   }
 };
 
+const getInvites = async (email) => {
+  try {
+    const inviteObject = await User.find({ email },
+      { groups: { $elemMatch: { inviteAccepted: false } } });
+    if (inviteObject) {
+      return {
+        statusCode: 200,
+        body: inviteObject,
+      };
+    } else {
+      return {
+        statusCode: 500,
+        body: 'Can not find users. Check DB or query',
+      };
+    }
+  } catch (err) {
+    return {
+      statusCode: 500,
+      body: err,
+    };
+  }
+};
+
+const acceptInvite = async (email, groupName) => {
+  try {
+    const inviteObject = await User.findOneAndUpdate(
+      {
+        email,
+        groups: { $elemMatch: { groupName } },
+      },
+      {
+        inviteAccepted: true,
+      },
+    );
+    if (inviteObject) {
+      return {
+        statusCode: 200,
+        body: inviteObject,
+      };
+    } else {
+      return {
+        statusCode: 500,
+        body: 'Can not update user. Check DB or query',
+      };
+    }
+  } catch (err) {
+    return {
+      statusCode: 500,
+      body: err,
+    };
+  }
+};
+
 module.exports = {
   createUser,
   findUserForLogin,
@@ -224,4 +277,6 @@ module.exports = {
   addToGroupOne,
   addToGroupMany,
   getAllUsers,
+  getInvites,
+  acceptInvite,
 };

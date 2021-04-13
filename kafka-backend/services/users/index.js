@@ -3,6 +3,7 @@ const loginHandler = require('./loginHandler');
 const testHandler = require('./testHandler');
 const updateHandler = require('./updateHandler');
 const getAllUsersHandler = require('./getAllUsersHandler');
+const getInvitesHandler = require('./getInvitesHandler');
 
 /* eslint-disable no-param-reassign */
 function handleRequest(msg, callback) {
@@ -22,6 +23,9 @@ function handleRequest(msg, callback) {
   } else if (msg.path === 'get-registered-users') {
     delete msg.path;
     getAllUsersHandler(msg, callback);
+  } else if (msg.path === 'get-invites') {
+    delete msg.path;
+    getInvitesHandler(msg, callback);
   }
 }
 
