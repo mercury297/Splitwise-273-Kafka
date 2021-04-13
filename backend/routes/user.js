@@ -62,6 +62,23 @@ router.post('/login', async (req, res) => {
   }
 });
 
+router.get('/registered', checkAuth, async (req, res) => {
+  req.body.path = 'get-registered-users';
+  try {
+    kafka.make_request('users', req.body, (err, results) => {
+      if (err) {
+        res.status(500).send('System Error, Try Again.');
+      } else {
+        console.log('inside successful result');
+        res.status(results.status).send(results.data);
+      }
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send(err);
+  }
+});
+
 router.get('/test', checkAuth, (req, res) => {
   res.status(200).send(req.body);
   // try {

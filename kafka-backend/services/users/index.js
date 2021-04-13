@@ -2,6 +2,7 @@ const registerHandler = require('./registerHandler');
 const loginHandler = require('./loginHandler');
 const testHandler = require('./testHandler');
 const updateHandler = require('./updateHandler');
+const getAllUsersHandler = require('./getAllUsersHandler');
 
 /* eslint-disable no-param-reassign */
 function handleRequest(msg, callback) {
@@ -18,6 +19,9 @@ function handleRequest(msg, callback) {
   } else if (msg.path === 'update-profile') {
     delete msg.path;
     updateHandler(msg, callback);
+  } else if (msg.path === 'get-registered-users') {
+    delete msg.path;
+    getAllUsersHandler(msg, callback);
   }
 }
 

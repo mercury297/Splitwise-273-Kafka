@@ -192,6 +192,29 @@ const addToGroupMany = async (emails, groupName) => {
   }
 };
 
+const getAllUsers = async () => {
+  try {
+    const userObject = await User.find().select({ email: 1 });
+    if (userObject) {
+      return {
+        statusCode: 200,
+        body: userObject,
+      };
+    } else {
+      return {
+        statusCode: 500,
+        body: 'Can not find users. Check DB or query',
+      };
+    }
+  } catch (err) {
+    console.log('find all users group err:', err);
+    return {
+      statusCode: 500,
+      body: err,
+    };
+  }
+};
+
 module.exports = {
   createUser,
   findUserForLogin,
@@ -200,4 +223,5 @@ module.exports = {
   updateUserByID,
   addToGroupOne,
   addToGroupMany,
+  getAllUsers,
 };
