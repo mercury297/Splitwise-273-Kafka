@@ -1,10 +1,14 @@
+/* eslint-disable no-param-reassign */
 const profilePictureHandler = require('./profilePictureHandler');
+const groupPictureHandler = require('./groupPictureHandler');
 
 function handleRequest(msg, callback) {
   if (msg.path === 'user-profile-picture') {
-    // eslint-disable-next-line no-param-reassign
     delete msg.path;
     profilePictureHandler(msg, callback);
+  } else if (msg.path === 'group-picture') {
+    delete msg.path;
+    groupPictureHandler(msg, callback);
   }
 }
 

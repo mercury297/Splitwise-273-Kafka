@@ -36,4 +36,30 @@ router.put('/profile/:userID', checkAuth, upload.single('file'), async (req, res
   }
 });
 
+router.put('/group/:groupID', checkAuth, upload.single('file'), async (req, res) => {
+  try {
+    const { file } = req;
+    const params = getParams(req.params.groupID, file.buffer, file.mimetype);
+    s3.upload(params, async (err, data) => {
+      if (err) {
+        res.status(500).send({
+          errors: err,
+        });
+      } else {
+        const msg = { groupID: req.params.groupID, path: 'group-picture', photoURL: data.Location };
+        kafka.make_request('pictures', msg, (error, results) => {
+          if (error) {
+            res.status(500).send('System Error, Try Again.');
+          } else {
+            res.status(results.status).send(results.data);
+          }
+        });
+      }
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(400).send('Missing file or userID param. Bad Request');
+  }
+});
+
 module.exports = router;
