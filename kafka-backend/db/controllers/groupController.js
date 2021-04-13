@@ -49,7 +49,38 @@ const updateGroupByID = async (groupID, updates) => {
   }
 };
 
+const addAcceptedInvite = async (groupName, email, name) => {
+  try {
+    const updateObject = await Group.findOneAndUpdate(
+      { name: groupName },
+      {
+        $push: {
+          users: { email, name },
+        },
+      },
+    );
+    if (updateObject) {
+      return {
+        statusCode: 200,
+        body: updateObject,
+      };
+    } else {
+      return {
+        statusCode: 500,
+        body: 'Update error',
+      };
+    }
+  } catch (err) {
+    console.log('add user to group after invite accept err:', err);
+    return {
+      statusCode: 500,
+      body: err,
+    };
+  }
+};
+
 module.exports = {
   createGroup,
   updateGroupByID,
+  addAcceptedInvite,
 };

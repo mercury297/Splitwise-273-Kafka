@@ -3,6 +3,7 @@
 /* eslint-disable consistent-return */
 const bcrypt = require('bcrypt');
 const User = require('../models/UserModel');
+const { getIndexOfGroup } = require('../../utils/arrayUtils');
 
 const createUser = async (name, email, password) => {
   console.log('inside controller');
@@ -240,16 +241,17 @@ const getInvites = async (email) => {
 
 const acceptInvite = async (email, groupName) => {
   try {
-    const inviteObject = await User.findOneAndUpdate(
+    const inviteObject = await User.findOne(
       {
         email,
         groups: { $elemMatch: { groupName } },
       },
-      {
-        inviteAccepted: true,
-      },
     );
-    if (inviteObject) {
+    const groupIndex = getIndexOfGroup(inviteObject.groups, groupName);
+    console.log('groupIndex', groupIndex);
+    inviteObject.groups[groupIndex].inviteAccepted = true;
+    const updateRes = await inviteObject.save();
+    if (updateRes) {
       return {
         statusCode: 200,
         body: inviteObject,
@@ -261,6 +263,7 @@ const acceptInvite = async (email, groupName) => {
       };
     }
   } catch (err) {
+    console.log('accept invite err', err);
     return {
       statusCode: 500,
       body: err,
