@@ -163,6 +163,35 @@ const addToGroupOne = async (email, groupName) => {
   }
 };
 
+const addToGroupMany = async (emails, groupName) => {
+  try {
+    const updateObject = await User.updateMany({
+      email: { $in: emails },
+    },
+    {
+      $push:
+      { groups: { groupName, inviteAccepted: false } },
+    });
+    if (updateObject) {
+      return {
+        statusCode: 200,
+        body: updateObject,
+      };
+    } else {
+      return {
+        statusCode: 500,
+        body: 'Update error',
+      };
+    }
+  } catch (err) {
+    console.log('add many users to group err:', err);
+    return {
+      statusCode: 500,
+      body: err,
+    };
+  }
+};
+
 module.exports = {
   createUser,
   findUserForLogin,
@@ -170,4 +199,5 @@ module.exports = {
   updateUser,
   updateUserByID,
   addToGroupOne,
+  addToGroupMany,
 };

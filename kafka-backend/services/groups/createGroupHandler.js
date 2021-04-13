@@ -10,7 +10,7 @@ const createGroupHandler = async (msg, callback) => {
   console.log(createGroupObject, userUpdateObject);
   if (createGroupObject.statusCode === 201 && userUpdateObject.statusCode === 200) {
     res.status = 200;
-    res.data = { user: userUpdateObject, group: createGroupObject };
+    res.data = { user: userUpdateObject.body, group: createGroupObject.body };
   } else {
     res.status = 206;
     res.data = { msg: 'Unsuccesful or partial success. Debug please', user: userUpdateObject, group: createGroupObject };

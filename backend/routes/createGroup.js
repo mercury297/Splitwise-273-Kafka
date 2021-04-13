@@ -24,4 +24,24 @@ router.post('/create', checkAuth, async (req, res) => {
   }
 });
 
+// body : emails:['','']
+router.post('/:groupName/invitations/send', checkAuth, async (req, res) => {
+  try {
+    let msg = { emails: req.body.emails, groupName: req.params.groupName, path: 'send-invites' };
+    kafka.make_request('groups', msg, (err, results) => {
+      if (err) {
+        res.status(500).send('System Error, Try Again.');
+      } else {
+        msg = results.data;
+        console.log('inside successful result');
+        res.status(results.status).send({
+          data: msg,
+        });
+      }
+    });
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
+
 module.exports = router;
