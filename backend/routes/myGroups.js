@@ -40,4 +40,21 @@ router.post('/:groupName/invitation/accept', checkAuth, async (req, res) => {
   }
 });
 
+router.get('/:email', checkAuth, async (req, res) => {
+  const msg = { path: 'get-my-groups', email: req.params.email };
+  try {
+    kafka.make_request('users', msg, (err, results) => {
+      if (err) {
+        res.status(500).send('System Error, Try Again.');
+      } else {
+        console.log('inside successful result');
+        res.status(results.status).send(results.data);
+      }
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send(err);
+  }
+});
+
 module.exports = router;

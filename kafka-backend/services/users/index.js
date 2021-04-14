@@ -5,6 +5,7 @@ const updateHandler = require('./updateHandler');
 const getAllUsersHandler = require('./getAllUsersHandler');
 const getInvitesHandler = require('./getInvitesHandler');
 const acceptInviteHandler = require('./acceptInviteHandler');
+const getMyGroupsHandler = require('./getMyGroupsHandler');
 
 /* eslint-disable no-param-reassign */
 function handleRequest(msg, callback) {
@@ -30,6 +31,9 @@ function handleRequest(msg, callback) {
   } else if (msg.path === 'accept-invite') {
     delete msg.path;
     acceptInviteHandler(msg, callback);
+  } else if (msg.path === 'get-my-groups') {
+    delete msg.path;
+    getMyGroupsHandler(msg, callback);
   }
 }
 

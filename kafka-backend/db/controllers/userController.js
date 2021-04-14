@@ -271,6 +271,31 @@ const acceptInvite = async (email, groupName) => {
   }
 };
 
+const getMyGroups = async (email) => {
+  try {
+    console.log('controller param', email);
+    const groupsObject = await User.findOne({ email },
+      { groups: { $elemMatch: { inviteAccepted: true } } });
+    if (groupsObject) {
+      return {
+        statusCode: 200,
+        body: groupsObject.groups,
+      };
+    } else {
+      return {
+        statusCode: 500,
+        body: 'Can not get user groups. Check DB or query',
+      };
+    }
+  } catch (err) {
+    const errBody = err;
+    return {
+      statusCode: 500,
+      body: errBody,
+    };
+  }
+};
+
 module.exports = {
   createUser,
   findUserForLogin,
@@ -282,4 +307,5 @@ module.exports = {
   getAllUsers,
   getInvites,
   acceptInvite,
+  getMyGroups,
 };
