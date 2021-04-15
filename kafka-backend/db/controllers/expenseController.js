@@ -1,4 +1,5 @@
 const Expense = require('../models/ExpenseModel');
+const { getIndexOfNote } = require('../../utils/arrayUtils');
 
 const createExpense = async (date, description, paidEmail, paidName, amount, groupName) => {
   try {
@@ -69,8 +70,33 @@ const getAllExpenses = async (groupName) => {
   }
 };
 
+const deleteNote = async (noteID, expenseID) => {
+  try {
+    const expenseObj = await Expense.findById(expenseID);
+    const noteIndex = getIndexOfNote(expenseObj.notes, noteID);
+    expenseObj.notes.splice(noteIndex, 1);
+    const deleteObj = await expenseObj.save();
+    if (deleteObj) {
+      return {
+        statusCode: 200,
+        body: deleteObj,
+      };
+    }
+    return {
+      statusCode: 500,
+      body: deleteObj,
+    };
+  } catch (err) {
+    return {
+      statusCode: 500,
+      body: err,
+    };
+  }
+};
+
 module.exports = {
   createExpense,
   addNote,
   getAllExpenses,
+  deleteNote,
 };

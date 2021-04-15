@@ -55,4 +55,19 @@ router.get('/:groupName/expenses', checkAuth, async (req, res) => {
   }
 });
 
+router.delete('/expense/:expenseID/note/:noteID', checkAuth, async (req, res) => {
+  const msg = { path: 'delete-note', expenseID: req.params.expenseID, noteID: req.params.noteID };
+  try {
+    kafka.make_request('expenses', msg, (err, results) => {
+      if (err) {
+        res.status(500).send('System Error, Try Again.');
+      } else {
+        res.status(results.status).send(results.data);
+      }
+    });
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
+
 module.exports = router;

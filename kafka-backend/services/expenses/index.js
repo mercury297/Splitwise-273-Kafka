@@ -2,6 +2,7 @@
 const addExpenseHandler = require('./addExpenseHandler');
 const addNoteHandler = require('./addNoteHandler');
 const getExpensesHandler = require('./getExpensesHandler');
+const deleteNoteHandler = require('./deleteNoteHandler');
 
 function handleRequest(msg, callback) {
   if (msg.path === 'add-expense') {
@@ -13,6 +14,9 @@ function handleRequest(msg, callback) {
   } else if (msg.path === 'get-expenses') {
     delete msg.path;
     getExpensesHandler(msg, callback);
+  } else if (msg.path === 'delete-note') {
+    delete msg.path;
+    deleteNoteHandler(msg, callback);
   }
 }
 

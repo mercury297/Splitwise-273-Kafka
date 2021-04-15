@@ -7,6 +7,16 @@ const getIndexOfGroup = (groupsArr, groupName) => {
   return -1;
 };
 
+const getIndexOfNote = (notesArr, noteID) => {
+  for (let i = 0; i < notesArr.length; i += 1) {
+    // eslint-disable-next-line no-underscore-dangle
+    if (notesArr[i]._id === noteID) {
+      return i;
+    }
+  }
+  return -1;
+};
+
 const createTxArray = (userThatPaid, owesList, amount, groupName, expense) => {
   const txArray = [];
   const amountOwed = amount / owesList.length;
@@ -33,4 +43,5 @@ module.exports = {
   getIndexOfGroup,
   createTxArray,
   getOwesList,
+  getIndexOfNote,
 };
