@@ -23,6 +23,30 @@ const createExpense = async (date, description, paidEmail, paidName, amount, gro
   }
 };
 
+const addNote = async (note, name, email, expenseID) => {
+  try {
+    const noteObj = await Expense.findById(expenseID);
+    noteObj.notes.push({ name, note, email });
+    const noteUpdateRes = await noteObj.save();
+    if (noteUpdateRes) {
+      return {
+        statusCode: 200,
+        body: noteUpdateRes,
+      };
+    }
+    return {
+      statusCode: 500,
+      body: noteUpdateRes,
+    };
+  } catch (err) {
+    return {
+      statusCode: 500,
+      body: err,
+    };
+  }
+};
+
 module.exports = {
   createExpense,
+  addNote,
 };
