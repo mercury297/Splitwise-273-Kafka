@@ -4,6 +4,7 @@ const users = require('./services/users/index');
 const passport = require('./services/passport');
 const pictures = require('./services/pictures/index');
 const groups = require('./services/groups/index');
+const expenses = require('./services/expenses/index');
 
 require('./db/connection');
 
@@ -45,3 +46,4 @@ handleTopicRequest('users', users);
 handleTopicRequest('passport', passport);
 handleTopicRequest('pictures', pictures);
 handleTopicRequest('groups', groups);
+handleTopicRequest('expenses', expenses);

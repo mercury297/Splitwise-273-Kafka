@@ -79,8 +79,31 @@ const addAcceptedInvite = async (groupName, email, name) => {
   }
 };
 
+const getGroupUsers = async (name) => {
+  try {
+    const usersObject = await Group.findOne({ name }).select({ users: 1 });
+    if (usersObject) {
+      return {
+        statusCode: 200,
+        body: usersObject,
+      };
+    } else {
+      return {
+        statusCode: 500,
+        body: 'Can not find users for group',
+      };
+    }
+  } catch (err) {
+    return {
+      statusCode: 500,
+      body: err,
+    };
+  }
+};
+
 module.exports = {
   createGroup,
   updateGroupByID,
   addAcceptedInvite,
+  getGroupUsers,
 };
