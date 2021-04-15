@@ -39,4 +39,20 @@ router.post('/expense/:expenseID/note', checkAuth, async (req, res) => {
   }
 });
 
+router.get('/:groupName/expenses', checkAuth, async (req, res) => {
+  const msg = { path: 'get-expenses', groupName: req.params.groupName };
+  try {
+    kafka.make_request('expenses', msg, (err, results) => {
+      if (err) {
+        res.status(500).send('System Error, Try Again.');
+      } else {
+        res.status(results.status).send(results.data);
+      }
+    });
+  } catch (err) {
+    console.log('err in route', err);
+    res.status(500).send(err);
+  }
+});
+
 module.exports = router;

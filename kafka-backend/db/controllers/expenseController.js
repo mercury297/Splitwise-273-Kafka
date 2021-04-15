@@ -46,7 +46,31 @@ const addNote = async (note, name, email, expenseID) => {
   }
 };
 
+const getAllExpenses = async (groupName) => {
+  console.log(groupName);
+  try {
+    const expensesObj = await Expense.find({ groupName });
+    console.log('inside get all expense controller', expensesObj);
+    if (expensesObj) {
+      return {
+        statusCode: 200,
+        body: expensesObj,
+      };
+    }
+    return {
+      statusCode: 500,
+      body: expensesObj,
+    };
+  } catch (err) {
+    return {
+      statusCode: 500,
+      body: err,
+    };
+  }
+};
+
 module.exports = {
   createExpense,
   addNote,
+  getAllExpenses,
 };
