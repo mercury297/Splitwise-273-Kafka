@@ -5,6 +5,7 @@ const passport = require('./services/passport');
 const pictures = require('./services/pictures/index');
 const groups = require('./services/groups/index');
 const expenses = require('./services/expenses/index');
+const activities = require('./services/activities/index');
 
 require('./db/connection');
 
@@ -47,3 +48,4 @@ handleTopicRequest('passport', passport);
 handleTopicRequest('pictures', pictures);
 handleTopicRequest('groups', groups);
 handleTopicRequest('expenses', expenses);
+handleTopicRequest('activities', activities);

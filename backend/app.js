@@ -39,7 +39,8 @@ app.use('/profile', require('./routes/profile'));
 app.use('/picture', require('./routes/picture'));
 app.use('/group-management', require('./routes/createGroup'));
 app.use('/group-management/groups', require('./routes/myGroups'));
-app.use('/group-management/group/', require('./routes/group'));
+app.use('/group-management/group', require('./routes/group'));
+app.use('/activities', require('./routes/recentActivity'));
 
 const port = process.env.PORT;
 // || 3001;

@@ -3,6 +3,7 @@ const { createExpense } = require('../../db/controllers/expenseController');
 const { getGroupUsers } = require('../../db/controllers/groupController');
 const { createTransactionMany } = require('../../db/controllers/transactionController');
 const { getOwesList, createTxArray } = require('../../utils/arrayUtils');
+const { createActivity } = require('../../db/controllers/activityController');
 
 const addExpenseHandler = async (msg, callback) => {
   const res = {};
@@ -11,6 +12,10 @@ const addExpenseHandler = async (msg, callback) => {
   const createExpenseObj = await createExpense(msg.date, msg.description,
     msg.paidEmail, msg.paidName, msg.amount, msg.groupName);
   if (createExpenseObj.statusCode === 201) {
+    const activityRes = await createActivity('ADD_EXPENSE', msg.paidName, msg.groupName, msg.paidEmail);
+    if (activityRes.statusCode === 201) {
+      console.log('acitivty for expense add: ', activityRes.body);
+    }
     const usersObject = await getGroupUsers(msg.groupName);
     if (usersObject.statusCode === 200) {
       const owesList = await getOwesList(usersObject.body.users);

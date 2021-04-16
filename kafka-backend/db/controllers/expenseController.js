@@ -31,7 +31,7 @@ const addNote = async (note, name, email, expenseID) => {
     const noteUpdateRes = await noteObj.save();
     if (noteUpdateRes) {
       return {
-        statusCode: 200,
+        statusCode: 201,
         body: noteUpdateRes,
       };
     }
