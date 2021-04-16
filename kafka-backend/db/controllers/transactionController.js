@@ -1,10 +1,13 @@
 const Transaction = require('../models/TransactionModel');
 
-const createTransactionOne = async (userThatPaid, userThatOwes, amountOwed, groupName) => {
+const createTransactionOne = async (userThatPaidEmail,
+  userThatPaidName, userThatOwesEmail, userThatOwesName, amountOwed, groupName) => {
   try {
     const txObject = new Transaction({
-      userThatPaid,
-      userThatOwes,
+      userThatPaidEmail,
+      userThatPaidName,
+      userThatOwesEmail,
+      userThatOwesName,
       amountOwed,
       groupName,
     });

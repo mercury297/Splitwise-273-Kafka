@@ -3,25 +3,22 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const transactionSchema = new Schema({
-  userThatPaid: {
-    email: {
-      type: String,
-      required: true,
-    },
-    name: {
-      type: String,
-      required: true,
-    },
+  // userThatPaid: {
+  userThatPaidEmail: {
+    type: String,
+    required: true,
   },
-  userThatOwes: {
-    email: {
-      type: String,
-      required: true,
-    },
-    name: {
-      type: String,
-      required: true,
-    },
+  userThatPaidName: {
+    type: String,
+    required: true,
+  },
+  userThatOwesEmail: {
+    type: String,
+    required: true,
+  },
+  userThatOwesName: {
+    type: String,
+    required: true,
   },
   amountOwed: {
     type: String,

@@ -23,8 +23,10 @@ const createTxArray = (userThatPaid, owesList, amount, groupName, expense) => {
   for (let i = 0; i < owesList.length; i += 1) {
     if (userThatPaid.email !== owesList[i].email) {
       txArray.push({
-        userThatPaid,
-        userThatOwes: owesList[i],
+        userThatPaidEmail: userThatPaid.email,
+        userThatPaidName: userThatPaid.name,
+        userThatOwesEmail: owesList[i].email,
+        userThatOwesName: owesList[i].name,
         amountOwed,
         groupName,
         expense,
