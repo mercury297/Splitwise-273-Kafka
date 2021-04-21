@@ -36,6 +36,26 @@ const loginUser = (payload) => (dispatch) => {
     });
 };
 
+const registerUser = (payload) => (dispatch) => {
+  console.log(payload);
+  axios.post(`${API.host}/user/register`, payload)
+    .then((res) => {
+      if (res.status === 201) {
+        console.log(res);
+        dispatch(registerDispatcher(res.data));
+      }
+    })
+    .catch((errors) => {
+      if (errors.response.data) {
+        console.log('in catch', errors.response.data);
+        alert('This email address is already registered! Please try another.');
+        dispatch(unauthDispatcher(errors.response.data));
+      } else {
+        dispatch(unauthDispatcher('Server error'));
+      }
+    });
+};
+
 export {
-  loginDispatcher, registerDispatcher, loginUser,
+  loginDispatcher, registerDispatcher, loginUser, registerUser,
 };

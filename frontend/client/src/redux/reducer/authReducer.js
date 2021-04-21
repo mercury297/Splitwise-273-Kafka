@@ -1,4 +1,4 @@
-import { LOGIN, UNAUTHENTICATED } from '../actions/action_types';
+import { LOGIN, UNAUTHENTICATED, REGISTER } from '../actions/action_types';
 
 const initState = {
   authUser: false,
@@ -19,6 +19,15 @@ const authReducer = (state = initState, action) => {
       console.log(action.payload);
       return {
         authUser: false,
+      };
+    }
+    case REGISTER: {
+      // add token for local storage. Do that in the backend
+      console.log('inside register reducer', action.payload);
+      // localStorage.setItem('user', JSON.stringify(action.payload.user));
+      return {
+        authUser: true,
+        currentUser: action.payload.data,
       };
     }
     default:

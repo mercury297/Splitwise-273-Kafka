@@ -6,6 +6,9 @@
 import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 
+import { connect } from 'react-redux';
+import { registerUser } from '../redux/actions/authAction';
+
 class Register extends Component {
   constructor(props) {
     super(props);
@@ -32,7 +35,7 @@ class Register extends Component {
       name: this.state.name,
     };
     console.log(data);
-    // this.props.registerUser(data);
+    this.props.registerUser(data);
   };
 
   render() {
@@ -86,4 +89,12 @@ class Register extends Component {
   }
 }
 
-export default Register;
+const mapStateToProps = (state) => ({
+  authUser: state.auth.authUser,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  registerUser: (payload) => dispatch(registerUser(payload)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Register);
