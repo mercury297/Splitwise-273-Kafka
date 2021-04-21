@@ -6,6 +6,9 @@
 import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 
+import { connect } from 'react-redux';
+import { loginUser } from '../redux/actions/authAction';
+
 class Login extends Component {
   constructor(props) {
     super(props);
@@ -16,13 +19,20 @@ class Login extends Component {
     };
   }
 
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillMount() {
+    this.setState({
+      authFlag: false,
+    });
+  }
+
   handleSubmit = (e) => {
     e.preventDefault();
     const data = {
       email: this.state.email,
       password: this.state.password,
     };
-    console.log(data);
+    this.props.loginUser(data);
   };
 
   render() {
@@ -66,4 +76,12 @@ class Login extends Component {
   }
 }
 
-export default Login;
+const mapStateToProps = (state) => ({
+  authUser: state.auth.authUser,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  loginUser: (payload) => dispatch(loginUser(payload)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
