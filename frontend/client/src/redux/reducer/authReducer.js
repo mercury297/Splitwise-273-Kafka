@@ -2,7 +2,7 @@ import { LOGIN, UNAUTHENTICATED, REGISTER } from '../actions/action_types';
 
 const initState = {
   authUser: false,
-  currentUser: {},
+  tempUser: {},
 };
 
 const authReducer = (state = initState, action) => {
@@ -10,9 +10,10 @@ const authReducer = (state = initState, action) => {
     case LOGIN: {
       console.log('action payload inside auth reducer: ', action.payload);
       localStorage.setItem('token', JSON.stringify(action.payload.token));
+      // localStorage.setItem('user', JSON.stringify(action.payload));
       return {
         authUser: true,
-        currentUser: action.payload,
+        tempUser: action.payload,
       };
     }
     case UNAUTHENTICATED: {
@@ -24,10 +25,11 @@ const authReducer = (state = initState, action) => {
     case REGISTER: {
       // add token for local storage. Do that in the backend
       console.log('inside register reducer', action.payload);
-      // localStorage.setItem('user', JSON.stringify(action.payload.user));
+      localStorage.setItem('token', JSON.stringify(action.payload.data.token));
+      // localStorage.setItem('user', JSON.stringify(action.payload.data));
       return {
         authUser: true,
-        currentUser: action.payload.data,
+        tempUser: action.payload.data,
       };
     }
     default:

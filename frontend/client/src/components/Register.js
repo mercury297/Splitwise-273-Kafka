@@ -8,6 +8,7 @@ import { Link, Redirect } from 'react-router-dom';
 
 import { connect } from 'react-redux';
 import { registerUser } from '../redux/actions/authAction';
+import { setProfileDispatcher } from '../redux/actions/profileAction';
 
 class Register extends Component {
   constructor(props) {
@@ -36,6 +37,7 @@ class Register extends Component {
     };
     console.log(data);
     this.props.registerUser(data);
+    this.props.setProfileDispatcher();
   };
 
   render() {
@@ -91,10 +93,12 @@ class Register extends Component {
 
 const mapStateToProps = (state) => ({
   authUser: state.auth.authUser,
+  profile: state.profile.user,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   registerUser: (payload) => dispatch(registerUser(payload)),
+  setProfileDispatcher: () => dispatch(setProfileDispatcher()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Register);

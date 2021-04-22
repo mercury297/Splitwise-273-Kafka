@@ -5,6 +5,7 @@ import { Route } from 'react-router-dom';
 import Landing from './Landing';
 import Login from './Login';
 import Register from './Register';
+import Profile from './Profile';
 
 class Main extends Component {
   render() {
@@ -13,6 +14,7 @@ class Main extends Component {
         <Route exact path="/" component={Landing} />
         <Route exact path="/user/login" component={Login} />
         <Route exact path="/user/register" component={Register} />
+        <Route exact path="/user/profile" component={Profile} />
       </div>
     );
   }

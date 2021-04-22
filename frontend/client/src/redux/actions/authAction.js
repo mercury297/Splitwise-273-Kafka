@@ -25,8 +25,8 @@ const loginUser = (payload) => (dispatch) => {
       console.log('dispatch response :', res);
     })
     .catch((errors) => {
-      // console.log(errors);
-      if (errors.response.data) {
+      console.log(errors);
+      if (errors) {
         alert('Invalid username or password. Please try again');
         console.log('in catch', errors.response.data);
         dispatch(unauthDispatcher(errors.response.data));
