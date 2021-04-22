@@ -22,4 +22,10 @@ router.put('/:email/update', checkAuth, async (req, res) => {
   }
 });
 
+// router.get('/:email', checkAuth, async (req, res) => {
+//   try{
+
+//   }
+// });
+
 module.exports = router;

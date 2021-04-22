@@ -1,9 +1,16 @@
 import axios from 'axios';
-import { LOGIN, REGISTER, UNAUTHENTICATED } from './action_types';
+import {
+  LOGIN, LOGOUT, REGISTER,
+  UNAUTHENTICATED,
+} from './action_types';
 import API from '../../config';
 
 const loginDispatcher = (payload) => ({
   type: LOGIN, payload,
+});
+
+const logoutDispatcher = () => ({
+  type: LOGOUT,
 });
 
 const registerDispatcher = (payload) => ({
@@ -28,8 +35,8 @@ const loginUser = (payload) => (dispatch) => {
       console.log(errors);
       if (errors) {
         alert('Invalid username or password. Please try again');
-        console.log('in catch', errors.response.data);
-        dispatch(unauthDispatcher(errors.response.data));
+        // console.log('in catch', errors.response.data);
+        dispatch(unauthDispatcher(errors));
       } else {
         dispatch(unauthDispatcher('Server error'));
       }
@@ -57,5 +64,5 @@ const registerUser = (payload) => (dispatch) => {
 };
 
 export {
-  loginDispatcher, registerDispatcher, loginUser, registerUser,
+  loginDispatcher, logoutDispatcher, registerDispatcher, loginUser, registerUser,
 };

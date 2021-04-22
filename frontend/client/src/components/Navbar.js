@@ -5,8 +5,8 @@
 /* eslint-disable react/prefer-stateless-function */
 import React, { Component } from 'react';
 import { Redirect } from 'react-router';
-// import { connect } from 'react-redux';
-// import { logoutDispatcher } from '../redux/actions/authAction';
+import { connect } from 'react-redux';
+import { logoutDispatcher } from '../redux/actions/authAction';
 import '../App.css';
 import '../styles/commonPage.css';
 
@@ -14,13 +14,13 @@ class SideNavbar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      authFlag: true,
+    //   authFlag: true,
     };
   }
 
   // eslint-disable-next-line consistent-return
   renderRedirect = () => {
-    if (this.state.authFlag === false) {
+    if (this.state.authUser === false) {
       return <Redirect to="/" />;
     }
   }
@@ -47,8 +47,7 @@ class SideNavbar extends Component {
           type="button"
           className="btn btn-primary"
           onClick={() => {
-            // this.props.logoutDispatcher();
-            this.setState({ authFlag: false });
+            this.props.logoutDispatcher();
           }}
         >
           Logout
@@ -60,14 +59,12 @@ class SideNavbar extends Component {
   }
 }
 
-// const mapStateToProps = (state) => ({
-//   authUser: state.auth.authUser,
-// });
+const mapStateToProps = (state) => ({
+  authUser: state.auth.authUser,
+});
 
-// const mapDispatchToProps = (dispatch) => ({
-//   logoutDispatcher: () => dispatch(logoutDispatcher()),
-// });
+const mapDispatchToProps = (dispatch) => ({
+  logoutDispatcher: () => dispatch(logoutDispatcher()),
+});
 
-// export default connect(mapStateToProps, mapDispatchToProps)(SideNavbar);
-
-export default SideNavbar;
+export default connect(mapStateToProps, mapDispatchToProps)(SideNavbar);
