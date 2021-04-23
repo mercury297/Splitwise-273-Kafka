@@ -218,8 +218,9 @@ const getAllUsers = async () => {
 
 const getInvites = async (email) => {
   try {
-    const inviteObject = await User.find({ email },
-      { groups: { $elemMatch: { inviteAccepted: false } } });
+    let inviteObject = await User.findOne({ email });
+    inviteObject = inviteObject.groups;
+    inviteObject = inviteObject.filter((group) => group.inviteAccepted === false);
     if (inviteObject) {
       return {
         statusCode: 200,
@@ -274,12 +275,13 @@ const acceptInvite = async (email, groupName) => {
 const getMyGroups = async (email) => {
   try {
     console.log('controller param', email);
-    const groupsObject = await User.findOne({ email },
-      { groups: { $elemMatch: { inviteAccepted: true } } });
+    let groupsObject = await User.findOne({ email });
+    groupsObject = groupsObject.groups;
+    groupsObject = groupsObject.filter((group) => group.inviteAccepted === true);
     if (groupsObject) {
       return {
         statusCode: 200,
-        body: groupsObject.groups,
+        body: groupsObject,
       };
     } else {
       return {
