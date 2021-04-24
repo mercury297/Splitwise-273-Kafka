@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable camelcase */
@@ -7,99 +8,73 @@ import axios from 'axios';
 import React, { Component } from 'react';
 import '../../App.css';
 import Container from 'react-bootstrap/Container';
+import { connect } from 'react-redux';
 import { getCurrentUserData, getConfig } from '../../utils/commonUtils';
 import SideNavbar from '../Navbar';
 import MyGroupsTable from './MyGroupsTable';
 import '../../styles/myGroups.css';
 import InvitationsTable from './InvitationsTable';
 import API from '../../config';
+import { getInvites, getMyGroups } from '../../redux/actions/myGroupAction';
 
 class MyGroups extends Component {
   constructor(props) {
     super(props);
     this.state = {
       myGroups: [],
-      myInvites: [],
-      noGroup: false,
-      noInvites: false,
+      invites: [],
     };
   }
 
   componentDidMount = async () => {
+    this.props.getInvites();
+    this.props.getMyGroups();
     const currentUser = getCurrentUserData();
-    const { email } = currentUser;
-    // eslint-disable-next-line camelcase
     const config = getConfig();
-    try {
-      const getGroupsRes = await axios.get(`${API.host}/group-management/groups/${email}`, config);
-      // console.log('invite res ', invitationsRes);
-      console.log('get groups res', getGroupsRes);
-      //   console.log(getGroupsRes.data.length);
-      //   if (getGroupsRes.data.length > 0) {
-      this.setState({ myGroups: getGroupsRes.data });
-    //   } else {
-    //     this.setState({ noGroup: true });
-    //   }
-    } catch (err) {
-      // alert(err.response.data.myGroups);
-      this.setState({ noGroup: true });
+    const inviteRes = await axios.get(`${API.host}/group-management/groups/${currentUser.email}/invites`, config);
+    if (inviteRes.status === 200) {
+      this.setState({ invites: inviteRes.data });
     }
-    try {
-      const invitationsRes = await axios.get(`${API.host}/group-management/groups/${email}/invites`, config);
-      console.log(invitationsRes);
-      //   if (invitationsRes.data.length > 0) {
-      this.setState({ myInvites: invitationsRes.data });
-    //   } else {
-    //     this.setState({ noGroup: true });
-    //   }
-    //   this.setState({ myInvites: invitationsRes.data });
-    } catch (err) {
-      this.setState({ noInvites: true });
+    const myGroupRes = await axios.get(`${API.host}/group-management/groups/${currentUser.email}`, config);
+    if (inviteRes.status === 200) {
+      this.setState({ myGroups: myGroupRes.data });
     }
   }
 
   render() {
-    let noGroup = null;
-    const noInvite = null;
-    if (this.state.noGroup) {
-      noGroup = <span> Not part of any group yet </span>;
-    }
-    if (this.state.noInvites) {
-      noGroup = <span> Not Invitations also! </span>;
-    }
+    console.log('is this even working');
+    console.log(this.props.myGroups);
+    console.log(this.props.invites);
+    const noGroup = <span style={{ marginLeft: '200px' }}> Not part of any group yet </span>;
+    const noInvite = <span style={{ marginLeft: '200px' }}> No Invitations pending! </span>;
     return (
       <div>
         <SideNavbar />
-        {this.state.noGroup
-          ? (
-            <Container className="justify-content-md-center-lower lowerrectangle">
-              {noGroup}
-            </Container>
-          ) : (
-            <div>
-              <Container className="justify-content-md-center-lower lowerrectangle">
-                <MyGroupsTable myGroups={this.state.myGroups} />
-              </Container>
-            </div>
-          )}
+        <div>
+          <Container className="justify-content-md-center-lower lowerrectangle">
+            <MyGroupsTable myGroups={this.state.myGroups} />
+          </Container>
+        </div>
         <br />
         <br />
-        {this.state.noInvites
-          ? (
-            <Container className="justify-content-md-center-lower lowerrectangle">
-              {noInvite}
-            </Container>
-          ) : (
-            <div>
-              <Container className="justify-content-md-center-lower lowerrectangle">
-                <InvitationsTable myInvites={this.state.myInvites} />
-              </Container>
-            </div>
-          )}
-
+        <div>
+          <Container className="justify-content-md-center-lower lowerrectangle">
+            <InvitationsTable myInvites={this.state.invites} />
+          </Container>
+        </div>
       </div>
     );
   }
 }
 
-export default MyGroups;
+const mapStateToProps = (state) => ({
+  myGroups: state.myGroup.myGroups,
+  invites: state.myGroup.myInvites,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  getInvites: () => dispatch(getInvites()),
+  getMyGroups: () => dispatch(getMyGroups()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(MyGroups);

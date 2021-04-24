@@ -16,7 +16,7 @@ import axios from 'axios';
 import _ from 'lodash';
 import { connect } from 'react-redux';
 import SideNavbar from '../Navbar';
-import getArrayForSelect from '../../utils/groupUtils';
+import { getArrayForSelect } from '../../utils/groupUtils';
 
 import { getRegisteredUsers } from '../../redux/actions/groupAction';
 import { removeCurrentUser, getCurrentUserData, getConfig } from '../../utils/commonUtils';

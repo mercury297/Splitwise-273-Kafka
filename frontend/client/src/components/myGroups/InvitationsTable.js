@@ -3,9 +3,11 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react/jsx-filename-extension */
 /* eslint-disable react/prefer-stateless-function */
-import axios from 'axios';
+// import axios from 'axios';
 import React, { Component } from 'react';
-import { getCurrentUserData } from '../../utils/commonUtils';
+import { connect } from 'react-redux';
+// import { getCurrentUserData, getConfig } from '../../utils/commonUtils';
+import { updateGroupsAndInvites } from '../../redux/actions/myGroupAction';
 
 class InvitationsTable extends Component {
   constructor(props) {
@@ -14,20 +16,10 @@ class InvitationsTable extends Component {
     };
   }
 
-    handleClick = async (groupID, groupName) => {
-      const currentUser = getCurrentUserData();
-      const reqBody = { groupID, userID: currentUser.user_id };
-      try {
-        const acceptRes = await axios.post('http://localhost:3001/group/myGroups/acceptInvitation', reqBody);
-        console.log(acceptRes);
-        if (acceptRes.status === 200) {
-          alert(`Invite from ${groupName} accepted successfully`);
-        } else {
-          alert('Could not accept invite');
-        }
-      } catch (err) {
-        console.log(err);
-      }
+    handleClick = async (groupName) => {
+      const payload = { groupName };
+      console.log(payload);
+      this.props.updateGroupsAndInvites(payload);
     }
 
     render() {
@@ -40,7 +32,7 @@ class InvitationsTable extends Component {
                   {invite.groupName}
                 </td>
                 <td>
-                  <button type="button" className="btn btn-primary" style={{ backgroundColor: '#ff652f' }} onClick={() => this.handleClick(invite._id, invite.groupName)}> Accept Invite </button>
+                  <button type="button" className="btn btn-primary" style={{ backgroundColor: '#ff652f' }} onClick={() => this.handleClick(invite.groupName)}> Accept Invite </button>
                 </td>
               </tr>
             )) }
@@ -50,4 +42,8 @@ class InvitationsTable extends Component {
     }
 }
 
-export default InvitationsTable;
+const mapDispatchToProps = (dispatch) => ({
+  updateGroupsAndInvites: (payload) => dispatch(updateGroupsAndInvites(payload)),
+});
+
+export default connect(null, mapDispatchToProps)(InvitationsTable);
