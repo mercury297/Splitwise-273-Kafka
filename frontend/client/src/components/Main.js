@@ -9,6 +9,7 @@ import Profile from './Profile';
 import CreateGroup from './createGroup/CreateGroup';
 import MyGroups from './myGroups/MyGroups';
 import RecentActivity from './RecentActivity';
+import GroupPage from './groups/groupPage';
 
 class Main extends Component {
   render() {
@@ -21,6 +22,7 @@ class Main extends Component {
         <Route exact path="/createGroup" component={CreateGroup} />
         <Route exact path="/myGroups" component={MyGroups} />
         <Route exact path="/recentActivity" component={RecentActivity} />
+        <Route exact path="/group" component={GroupPage} />
       </div>
     );
   }
