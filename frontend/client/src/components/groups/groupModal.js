@@ -14,8 +14,10 @@ import Modal from 'react-bootstrap/Modal';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import axios from 'axios';
+import { connect } from 'react-redux';
 import API from '../../config';
 import { getConfig, getCurrentUserData } from '../../utils/commonUtils';
+import { addExpense } from '../../redux/actions/groupAction';
 
 class ExpenseModal extends Component {
   constructor(props) {
@@ -43,16 +45,18 @@ class ExpenseModal extends Component {
     const { description, amount } = this.state;
     const config = getConfig();
     const currentUser = getCurrentUserData();
-    // msg.date, msg.description,
-    // msg.paidEmail, msg.paidName, msg.amount, msg.groupName;
-    const reqBody = {
+    const payload = {
+      groupName,
       description,
       amount,
-      paidEmail: currentUser.email,
-      paidName: currentUser.name,
+      email: currentUser.email,
+      name: currentUser.name,
     };
-    const addExpenseRes = await axios.post(`${API.host}/group-management/group/${groupName}/expense`, reqBody, config);
-    console.log(addExpenseRes);
+    // const addExpenseRes = await axios.post
+    // (`${API.host}/group-management/group/${groupName}/expense`,
+    //  reqBody, config);
+    // console.log(addExpenseRes);
+    this.props.addExpense(payload);
   }
 
   render() {
@@ -95,4 +99,8 @@ class ExpenseModal extends Component {
   }
 }
 
-export default ExpenseModal;
+const mapDispatchToProps = (dispatch) => ({
+  addExpense: (payload) => dispatch(addExpense(payload)),
+});
+
+export default connect(null, mapDispatchToProps)(ExpenseModal);

@@ -8,9 +8,11 @@ import React, { Component } from 'react';
 import '../../styles/myGroups.css';
 import '../../styles/groupPage.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import axios from 'axios';
-import API from '../../config';
-import { getConfig, getCurrentUserData } from '../../utils/commonUtils';
+// import axios from 'axios';
+import { connect } from 'react-redux';
+// import API from '../../config';
+import { getCurrentUserData } from '../../utils/commonUtils';
+import { deleteNote, addNote } from '../../redux/actions/groupAction';
 
 class Table extends Component {
   constructor(props) {
@@ -24,19 +26,25 @@ class Table extends Component {
       console.log(expenseID, noteID);
       // eslint-disable-next-line no-restricted-globals
       if (confirm('Are you sure you want to delete this node?')) {
-        const config = getConfig();
+        // const config = getConfig();
         const currentUser = getCurrentUserData();
         const { email, name } = currentUser;
         const { groupName } = this.props.expenses[0];
-        const reqBody = { email, name };
-        console.log(reqBody);
-        console.log(config);
-        const deleteRes = await axios.delete(`${API.host}/group-management/group/${groupName}/expense/${expenseID}/note/${noteID}`, config, reqBody);
-        if (deleteRes.status === 200) {
-          alert('Note deleted ');
-        } else {
-          alert('Problem in deleting note');
-        }
+        // const reqBody = { email, name };
+        // console.log(reqBody);
+        // console.log(config);
+        // const deleteRes =
+        // await axios.delete(`${API.host}/group-management/group/${groupName}
+        // /expense/${expenseID}/note/${noteID}`, config, reqBody);
+        // if (deleteRes.status === 200) {
+        //   alert('Note deleted ');
+        // } else {
+        //   alert('Problem in deleting note');
+        // }
+        const payload = {
+          groupName, expenseID, email, name, noteID,
+        };
+        this.props.deleteNote(payload);
       } else {
         console.log('Well you did not');
       }
@@ -46,15 +54,20 @@ class Table extends Component {
       console.log(expenseID);
       console.log(this.state.note);
       const { note } = this.state;
-      const config = getConfig();
+      // const config = getConfig();
       const currentUser = getCurrentUserData();
       const { email, name } = currentUser;
       const { groupName } = this.props.expenses[0];
-      const reqBody = { email, name, note };
-      const addNoteRes = await axios.post(`${API.host}/group-management/group/${groupName}/expense/${expenseID}/note`, reqBody, config);
-      if (addNoteRes.status === 201) {
-        alert('Note added successfully!');
-      }
+      // const reqBody = { email, name, note };
+      // const addNoteRes = await axios.post(`${API.host}/group-management/group
+      // /${groupName}/expense/${expenseID}/note`, reqBody, config);
+      // if (addNoteRes.status === 201) {
+      //   alert('Note added successfully!');
+      // }
+      const payload = {
+        groupName, expenseID, email, name, note,
+      };
+      this.props.addNote(payload);
     }
 
     handleNoteChange = (event) => {
@@ -109,4 +122,9 @@ class Table extends Component {
     }
 }
 
-export default Table;
+const mapDispatchToProps = (dispatch) => ({
+  deleteNote: (payload) => dispatch(deleteNote(payload)),
+  addNote: (payload) => dispatch(addNote(payload)),
+});
+
+export default connect(null, mapDispatchToProps)(Table);
