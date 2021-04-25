@@ -7,6 +7,15 @@ const getIndexOfGroup = (groupsArr, groupName) => {
   return -1;
 };
 
+const getIndexOfUser = (userArr, email) => {
+  for (let i = 0; i < userArr.length; i += 1) {
+    if (userArr[i].email === email) {
+      return i;
+    }
+  }
+  return -1;
+};
+
 const getIndexOfNote = (notesArr, noteID) => {
   for (let i = 0; i < notesArr.length; i += 1) {
     // eslint-disable-next-line no-underscore-dangle
@@ -46,4 +55,5 @@ module.exports = {
   createTxArray,
   getOwesList,
   getIndexOfNote,
+  getIndexOfUser,
 };

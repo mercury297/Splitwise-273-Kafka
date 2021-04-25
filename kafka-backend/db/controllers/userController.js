@@ -298,6 +298,36 @@ const getMyGroups = async (email) => {
   }
 };
 
+const leaveGroupUser = async (email, groupName) => {
+  try {
+    const userObject = await User.findOne({ email });
+    console.log('304', userObject);
+    const index = getIndexOfGroup(userObject.groups, groupName);
+    console.log(index);
+    userObject.groups.splice(index, 1);
+    console.log(308, userObject);
+    const updateRes = await userObject.save();
+    if (updateRes) {
+      return {
+        statusCode: 200,
+        body: updateRes,
+      };
+    } else {
+      return {
+        statusCode: 500,
+        body: 'Can not delete group from User. Check DB or query',
+      };
+    }
+  } catch (err) {
+    const errBody = err;
+    console.log(errBody);
+    return {
+      statusCode: 500,
+      body: errBody,
+    };
+  }
+};
+
 module.exports = {
   createUser,
   findUserForLogin,
@@ -310,4 +340,5 @@ module.exports = {
   getInvites,
   acceptInvite,
   getMyGroups,
+  leaveGroupUser,
 };

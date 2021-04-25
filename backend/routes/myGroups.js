@@ -57,4 +57,21 @@ router.get('/:email', checkAuth, async (req, res) => {
   }
 });
 
+router.post('/:groupName/leave', checkAuth, async (req, res) => {
+  const msg = { path: 'leave-group', email: req.body.email, groupName: req.params.groupName };
+  try {
+    kafka.make_request('transactions', msg, (err, results) => {
+      if (err) {
+        res.status(500).send('System Error, Try Again.');
+      } else {
+        console.log('inside successful result');
+        res.status(results.status).send(results.data);
+      }
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send(err);
+  }
+});
+
 module.exports = router;

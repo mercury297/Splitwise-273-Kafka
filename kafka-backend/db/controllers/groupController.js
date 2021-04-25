@@ -1,5 +1,6 @@
 /* eslint-disable no-else-return */
 const Group = require('../models/GroupModel');
+const { getIndexOfUser } = require('../../utils/arrayUtils');
 
 const createGroup = async (groupName, email, userName) => {
   try {
@@ -101,9 +102,37 @@ const getGroupUsers = async (name) => {
   }
 };
 
+const deleteUserFromGroup = async (groupName, email) => {
+  try {
+    const groupObject = await Group.findOne({ name: groupName });
+    console.log(groupObject);
+    const index = getIndexOfUser(groupObject.users, email);
+    groupObject.users.splice(index, 1);
+    const updateRes = await groupObject.save();
+    if (updateRes) {
+      return {
+        statusCode: 200,
+        body: updateRes,
+      };
+    } else {
+      return {
+        statusCode: 500,
+        body: 'Can not delete group from User. Check DB or query',
+      };
+    }
+  } catch (err) {
+    console.log(err);
+    return {
+      statusCode: 500,
+      body: err,
+    };
+  }
+};
+
 module.exports = {
   createGroup,
   updateGroupByID,
   addAcceptedInvite,
   getGroupUsers,
+  deleteUserFromGroup,
 };
