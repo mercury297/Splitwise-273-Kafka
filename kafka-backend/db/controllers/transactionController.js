@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const Transaction = require('../models/TransactionModel');
 
 const createTransactionOne = async (userThatPaidEmail,
@@ -44,13 +45,25 @@ const createTransactionMany = async (txArray) => {
     };
   }
 };
-
+// find({ userThatPaidEmail: email },{ settledFlag: false })
 const getTransactionSummary = async (email) => {
+  console.log(email);
   try {
-    const txObject = await Transaction.find(
-      { $or: [{ userThatPaidEmail: email }, { userThatOwesEmail: email }] },
-      { settledFlag: false },
-    );
+    const txObject = await Transaction.aggregate([
+      { $match: { settledFlag: false } },
+      {
+        $group: {
+          _id: {
+            groupName: '$groupName',
+            userThatPaidEmail: '$userThatPaidEmail',
+            userThatOwesEmail: '$userThatOwesEmail',
+          },
+          total: {
+            $sum: '$amountOwed',
+          },
+        },
+      }]);
+    console.log('inside trans summary', txObject);
     if (txObject) {
       return {
         statusCode: 200,
@@ -59,7 +72,7 @@ const getTransactionSummary = async (email) => {
     }
     return {
       statusCode: 500,
-      body: 'Update error',
+      body: 'get summary error',
     };
   } catch (err) {
     return {
