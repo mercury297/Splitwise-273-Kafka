@@ -1,3 +1,24 @@
+const formats = ['USD', 'GBP', 'BHD', 'KWD', 'EUR', 'CAD'];
+
+const currencyFormatter = (currency = 'USD', amount) => {
+  let formatter = '';
+  if (currency === null) {
+    formatter = new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      maximumFractionDigits: 2,
+    });
+  } else {
+    formatter = new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency,
+      maximumFractionDigits: 2,
+    });
+  }
+
+  return formatter.format(amount);
+};
+
 const getConfig = () => {
   let token = JSON.parse(localStorage.getItem('token'));
   token = token.split(' ');
@@ -31,7 +52,9 @@ const removeCurrentUser = (users, currentUser) => {
 };
 
 export {
+  formats,
   getConfig,
   removeCurrentUser,
   getCurrentUserData,
+  currencyFormatter,
 };

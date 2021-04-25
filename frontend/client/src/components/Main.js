@@ -11,6 +11,7 @@ import CreateGroup from './createGroup/CreateGroup';
 import MyGroups from './myGroups/MyGroups';
 import RecentActivity from './RecentActivity';
 import GroupPage from './groups/groupPage';
+import Dashboard from './Dashboard/Dashboard';
 
 class Main extends Component {
   render() {
@@ -24,6 +25,7 @@ class Main extends Component {
         <Route exact path="/myGroups" component={MyGroups} />
         <Route exact path="/recentActivity" component={RecentActivity} />
         <Route exact path="/group/:groupName" render={(props) => <GroupPage {...props} />} />
+        <Route exact path="/dashboard" component={Dashboard} />
       </div>
     );
   }
