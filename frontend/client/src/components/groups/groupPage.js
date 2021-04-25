@@ -1,33 +1,36 @@
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable react/prop-types */
 /* eslint-disable react/jsx-filename-extension */
 import React, { Component } from 'react';
-// import axios from 'axios';
+import axios from 'axios';
 import SideNavbar from '../Navbar';
 import Table from './groupTable';
 import '../../styles/groupPage.css';
 import ExpenseModal from './groupModal';
+import API from '../../config';
+import { getConfig } from '../../utils/commonUtils';
 
 class GroupPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-    //   expenses: [],
+      expenses: [],
     //   usersummary: [],
     };
   }
 
   componentDidMount = async () => {
-    // console.log('group id', this.props.location.state.group);
-    // const groupId = this.props.location.state.group;
-    // console.log('group id', groupId);
-    // const resForExpenseList = await axios.get(`http://localhost:3002/individualgroup/showexpanse/${groupId}`);
-    // console.log('Expanse', resForExpenseList.data);
-    // this.setState({ expenses: resForExpenseList.data.data });
-    // const resForUserSummary = await axios.get(`http://localhost:3002/individualgroup/Groupsummary/${groupId}`);
-    // console.log('summary', resForUserSummary.data);
-    // this.setState({ usersummary: resForUserSummary.data.body });
+    const config = getConfig();
+    // eslint-disable-next-line react/destructuring-assignment
+    const { groupName } = this.props.location.state.group;
+    const getExpenseRes = await axios.get(`${API.host}/group-management/group/${groupName}/expenses`, config);
+    console.log(getExpenseRes);
+    this.setState({ expenses: getExpenseRes.data });
   }
 
   render() {
+    // eslint-disable-next-line react/destructuring-assignment
+    console.log(this.props.location.state);
     // name={this.props.location.state.name});
     return (
       <div>
@@ -35,8 +38,8 @@ class GroupPage extends Component {
         {/* <Example GroupId={this.props.location.state.group}/>
         <TablePage data={this.state.expenses}/>
         <Usersummary data={this.state.usersummary}/> */}
-        <ExpenseModal />
-        <Table />
+        <ExpenseModal groupName={this.props.location.state.group.groupName} />
+        <Table expenses={this.state.expenses} />
       </div>
     );
   }

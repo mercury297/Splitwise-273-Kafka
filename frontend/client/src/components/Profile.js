@@ -18,7 +18,7 @@ import SideNavbar from './Navbar';
 import API from '../config';
 
 import { setProfile, profileUpdate } from '../redux/actions/profileAction';
-// import { getCurrentUserData, updateCurrentUserData } from '../utils/commonUtils';
+import { getCurrentUserData } from '../utils/commonUtils';
 
 class Profile extends Component {
   constructor(props) {
@@ -99,7 +99,7 @@ class Profile extends Component {
   render() {
     const { authUser, profile } = this.props;
     console.log(authUser, profile);
-    const currentUser = profile;
+    const currentUser = profile || getCurrentUserData();
     // if(currentUser !=== auth)
     let redirectVar = null;
     let currentURL = '';

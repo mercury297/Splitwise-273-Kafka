@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable react/jsx-filename-extension */
 /* eslint-disable react/prefer-stateless-function */
 import React, { Component } from 'react';
@@ -22,7 +23,7 @@ class Main extends Component {
         <Route exact path="/createGroup" component={CreateGroup} />
         <Route exact path="/myGroups" component={MyGroups} />
         <Route exact path="/recentActivity" component={RecentActivity} />
-        <Route exact path="/group" component={GroupPage} />
+        <Route exact path="/group/:groupName" render={(props) => <GroupPage {...props} />} />
       </div>
     );
   }

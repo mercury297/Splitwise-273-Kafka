@@ -4,8 +4,8 @@ const { Schema } = mongoose;
 
 const expenseSchema = new Schema({
   date: {
-    type: String,
-    required: true,
+    type: Date,
+    default: Date.now,
   },
   description: {
     type: String,

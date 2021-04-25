@@ -9,7 +9,7 @@ const addExpenseHandler = async (msg, callback) => {
   const res = {};
   // const { date, description, paidEmail, paidName, amount, groupName } = msg;
   console.log('add expense handler msg: ', msg);
-  const createExpenseObj = await createExpense(msg.date, msg.description,
+  const createExpenseObj = await createExpense(msg.description,
     msg.paidEmail, msg.paidName, msg.amount, msg.groupName);
   if (createExpenseObj.statusCode === 201) {
     const activityRes = await createActivity('ADD_EXPENSE', msg.paidName, msg.groupName, msg.paidEmail);

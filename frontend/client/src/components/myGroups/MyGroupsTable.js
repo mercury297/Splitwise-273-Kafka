@@ -34,7 +34,8 @@ class MyGroupsTable extends Component {
     }
 
     handleGroupRedirect = (group) => {
-      const redirectGroup = { groupID: group.group_id, groupName: group.group_name };
+      const redirectGroup = { groupName: group.groupName };
+      console.log(redirectGroup);
       this.setState({ redirectGroup });
       this.setState({ redirect: true });
     }
@@ -44,14 +45,14 @@ class MyGroupsTable extends Component {
         return (
           <Redirect
             to={{
-              pathname: '/group/',
+              pathname: `/group/${this.state.redirectGroup.groupName}`,
               state: { group: this.state.redirectGroup },
             }}
           />
         );
       }
       return (
-        <table className="table" style={{ marginLeft: '200px' }}>
+        <table className="table">
           <tbody>
             {this.props.myGroups.map((group) => (
               <tr className="table">

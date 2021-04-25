@@ -14,6 +14,8 @@ import Modal from 'react-bootstrap/Modal';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import axios from 'axios';
+import API from '../../config';
+import { getConfig, getCurrentUserData } from '../../utils/commonUtils';
 
 class ExpenseModal extends Component {
   constructor(props) {
@@ -29,27 +31,29 @@ class ExpenseModal extends Component {
 
   handleShow = () => this.setState({ show: true });
 
-  // onChangeAmount = (amount) => this.setState({ amount: amount.target.value });
+  onChangeAmount = (amount) => this.setState({ amount: amount.target.value });
   // // console.log();
 
-  // onChangeDesc = (description) => this.setState({ description: description.target.value });
+  onChangeDesc = (description) => this.setState({ description: description.target.value });
 
-  // handleSave = async () => {
-  //   const Amount = this.state.amount;
-  //   const Description = this.state.description;
-  //   const EmailId = localStorage.getItem('EmailId');
-  //   const { GroupId } = this.props;
-  //   const body = {
-  //     Amount,
-  //     Description,
-  //     EmailId,
-  //     GroupId,
-  //   };
-  //   const res = await axios.post('http://localhost:3002/individualgroup/addExpense', body);
-  //   if (res.status === 200) {
-  //     alert(res.data.body);
-  //   }
-  // }
+  handleSave = async () => {
+    console.log(this.state.amount);
+    console.log(this.state.description);
+    const { groupName } = this.props;
+    const { description, amount } = this.state;
+    const config = getConfig();
+    const currentUser = getCurrentUserData();
+    // msg.date, msg.description,
+    // msg.paidEmail, msg.paidName, msg.amount, msg.groupName;
+    const reqBody = {
+      description,
+      amount,
+      paidEmail: currentUser.email,
+      paidName: currentUser.name,
+    };
+    const addExpenseRes = await axios.post(`${API.host}/group-management/group/${groupName}/expense`, reqBody, config);
+    console.log(addExpenseRes);
+  }
 
   render() {
     return (

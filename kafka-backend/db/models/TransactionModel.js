@@ -21,7 +21,7 @@ const transactionSchema = new Schema({
     required: true,
   },
   amountOwed: {
-    type: String,
+    type: Number,
     required: true,
   },
   settledFlag: {

@@ -24,7 +24,7 @@ class InvitationsTable extends Component {
 
     render() {
       return (
-        <table className="table" style={{ marginLeft: '200px' }}>
+        <table className="table">
           <tbody>
             {this.props.myInvites.map((invite) => (
               <tr className="table">
