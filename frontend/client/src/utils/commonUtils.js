@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-globals */
 const formats = ['USD', 'GBP', 'BHD', 'KWD', 'EUR', 'CAD'];
 
 const currencyFormatter = (currency = 'USD', amount) => {
@@ -51,10 +52,18 @@ const removeCurrentUser = (users, currentUser) => {
   return users;
 };
 
+const getDayOfWeek = (date) => {
+  const dayOfWeek = new Date(date).getDay();
+  const dateOfWeek = new Date(date).getDate();
+  return isNaN(dayOfWeek) ? null
+    : `${dateOfWeek}  ${['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][dayOfWeek]}`;
+};
+
 export {
   formats,
   getConfig,
   removeCurrentUser,
   getCurrentUserData,
   currencyFormatter,
+  getDayOfWeek,
 };

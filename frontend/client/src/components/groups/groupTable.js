@@ -11,7 +11,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 // import axios from 'axios';
 import { connect } from 'react-redux';
 // import API from '../../config';
-import { getCurrentUserData } from '../../utils/commonUtils';
+import { getCurrentUserData, getDayOfWeek } from '../../utils/commonUtils';
 import { deleteNote, addNote } from '../../redux/actions/groupAction';
 
 class Table extends Component {
@@ -95,7 +95,7 @@ class Table extends Component {
                 <td className="Description">{expense.description}</td>
                 <td className="PaidBy">{expense.paidName}</td>
                 <td>{expense.amount}</td>
-                <td>{expense.date}</td>
+                <td>{getDayOfWeek(expense.date)}</td>
                 <td>
                   <ul className="list-group noteslist">
                     {expense.notes.map((note) => (
