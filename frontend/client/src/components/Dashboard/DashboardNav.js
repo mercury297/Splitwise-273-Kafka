@@ -19,7 +19,8 @@ import '../../styles/dashboard.css';
 import '../../styles/groupPage.css';
 import Jumbotron from 'react-bootstrap/Jumbotron';
 import Select from 'react-select';
-import { currencyFormatter, getCurrentUserData } from '../../utils/commonUtils';
+import { currencyFormatter, getConfig, getCurrentUserData } from '../../utils/commonUtils';
+import API from '../../config';
 
 class DashboardNav extends Component {
   constructor(props) {
@@ -48,11 +49,14 @@ class DashboardNav extends Component {
 
   settleUp = async () => {
     const currentUser = getCurrentUserData();
+
     try {
-      const settleRes = await axios.post('http://localhost:3001/dashboard/settleUp', {
+      console.log(this.state.userSelected, currentUser.email);
+      const config = getConfig();
+      const settleRes = await axios.post(`${API.host}/dashboard/settle-up`, {
         currentUser: currentUser.email,
-        settleUser: this.state.userSelected,
-      });
+        settleUpUser: this.state.userSelected,
+      }, config);
       console.log('settle res', settleRes);
       alert('Settle up successful');
     } catch (err) {
@@ -61,9 +65,7 @@ class DashboardNav extends Component {
   }
 
   render() {
-    // console.log('props', this.props);
     const currentUser = getCurrentUserData();
-    // console.log(currentUser);
     return (
       <Container className="shadow p-3 mb-5 bg-white rounded" className="justify-content-md-center">
         <Jumbotron className="jumbotron">

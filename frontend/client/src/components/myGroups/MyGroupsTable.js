@@ -5,7 +5,8 @@
 import axios from 'axios';
 import React, { Component } from 'react';
 import { Redirect } from 'react-router';
-import { getCurrentUserData } from '../../utils/commonUtils';
+import { getCurrentUserData, getConfig } from '../../utils/commonUtils';
+import API from '../../config';
 
 class MyGroupsTable extends Component {
   constructor(props) {
@@ -16,11 +17,12 @@ class MyGroupsTable extends Component {
     };
   }
 
-    handleClick = async (groupID, groupName) => {
+    handleClick = async (groupName) => {
       const currentUser = getCurrentUserData();
-      const reqBody = { groupID, email: currentUser.email, user_id: currentUser.user_id };
+      const reqBody = { email: currentUser.email };
+      const config = getConfig();
       try {
-        const leaveGroupRes = await axios.post('http://localhost:3001/group/myGroups/leaveGroup', reqBody);
+        const leaveGroupRes = await axios.post(`${API.host}/group-management/groups/${groupName}/leave`, reqBody, config);
         console.log('leave res', leaveGroupRes);
         if (leaveGroupRes.status === 200) {
           alert(`Group ${groupName} left successfully`);
@@ -62,7 +64,7 @@ class MyGroupsTable extends Component {
                   </button>
                 </td>
                 <td>
-                  <button type="button" className="btn btn-primary" style={{ backgroundColor: '#ff652f' }} onClick={() => this.handleClick(group.group_id, group.group_name)}> Leave Group </button>
+                  <button type="button" className="btn btn-primary" style={{ backgroundColor: '#ff652f' }} onClick={() => this.handleClick(group.groupName)}> Leave Group </button>
                 </td>
               </tr>
             )) }

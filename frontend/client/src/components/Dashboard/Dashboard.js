@@ -7,12 +7,14 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router';
 import axios from 'axios';
 import _ from 'lodash';
+import { connect } from 'react-redux';
 import DashboardNav from './DashboardNav';
 import Duelist from './DueList';
 import { getTotalBalance, createArrayForDueList, getArrForSelect } from '../../utils/dashboardUtils';
 import { getCurrentUserData, getConfig } from '../../utils/commonUtils';
 import SideNavbar from '../Navbar';
 import API from '../../config';
+import { getDashboard } from '../../redux/actions/dashboardAction';
 // import { getTotalBalance } from '../../utils/dashboardUtils';
 
 class Dashboard extends Component {
@@ -41,6 +43,7 @@ class Dashboard extends Component {
     const currentUser = getCurrentUserData();
     const config = getConfig();
     console.log(currentUser);
+    this.props.getDashboard(currentUser.email);
     try {
       const res = await axios.get(`${API.host}/dashboard/${currentUser.email}`, config);
       console.log('res', res.data);
@@ -102,4 +105,12 @@ class Dashboard extends Component {
   }
 }
 
-export default Dashboard;
+const mapStateToProps = (state) => ({
+  dashboard: state.dashboard.dashboardData,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  getDashboard: (payload) => dispatch(getDashboard(payload)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
