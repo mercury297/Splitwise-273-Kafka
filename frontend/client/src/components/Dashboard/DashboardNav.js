@@ -9,6 +9,7 @@
 /* eslint-disable react/jsx-no-undef */
 import React, { Component } from 'react';
 import axios from 'axios';
+import { connect } from 'react-redux';
 import '../../App.css';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
@@ -21,6 +22,7 @@ import Jumbotron from 'react-bootstrap/Jumbotron';
 import Select from 'react-select';
 import { currencyFormatter, getConfig, getCurrentUserData } from '../../utils/commonUtils';
 import API from '../../config';
+import { getDashboard } from '../../redux/actions/dashboardAction';
 
 class DashboardNav extends Component {
   constructor(props) {
@@ -58,7 +60,9 @@ class DashboardNav extends Component {
         settleUpUser: this.state.userSelected,
       }, config);
       console.log('settle res', settleRes);
-      alert('Settle up successful');
+      if (settleRes.status === 200) {
+        alert('Settle up successful');
+      }
     } catch (err) {
       console.log(err);
     }
@@ -133,4 +137,8 @@ class DashboardNav extends Component {
   }
 }
 
-export default DashboardNav;
+const mapDispatchToProps = (dispatch) => ({
+  getDashboard: (payload) => dispatch(getDashboard(payload)),
+});
+
+export default connect(null, mapDispatchToProps)(DashboardNav);
